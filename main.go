@@ -11,8 +11,10 @@ import (
 
 const GREETING_1_MESSAGE = "Введите математическое выражение (пример: 5 + 2, 10 / 5, VII + III) и нажмите Enter"
 const GREETING_2_MESSAGE = "Для выхода из программы введите quit"
-const INCORRECT_MATH_OPERATION_MESSAGE = "Введите корректное математическое выражение"
-const ROMAN_NEGATIVE_EXCEPTION_MESSAGE = "В римской системе нет отрицательных чисел"
+const INCORRECT_MATH_OPERATION_MESSAGE = "Вывод ошибки, так как строка не является математической операцией."
+const ROMAN_NEGATIVE_EXCEPTION_MESSAGE = "Вывод ошибки, так как в римской системе нет отрицательных чисел."
+const DIFFERENT_MATH_EXCEPTION_MESSAGE = "Вывод ошибки, так как используются одновременно разные системы счисления"
+const INCORRECT_FORMAT_MESSAGE = "Вывод ошибки, так как формат математической операции не удовлетворяет заданию — два операнда и один оператор (+, -, /, *)."
 const PROGRAM_EXIT_MESSAGE = "Программа завершена"
 
 var RomanNumerals = map[rune]int{
@@ -73,14 +75,18 @@ func calc(input string) string {
 		if arabicMath(inputArray[0]) {
 			if arabicMath(inputArray[1]) {
 				return strconv.Itoa(arabicCalc(inputArray))
+			} else {
+				panic(DIFFERENT_MATH_EXCEPTION_MESSAGE)
 			}
 		} else {
 			if romanMath(inputArray[1]) {
 				return romanCalc(inputArray)
+			} else {
+				panic(DIFFERENT_MATH_EXCEPTION_MESSAGE)
 			}
 		}
 	}
-	panic(INCORRECT_MATH_OPERATION_MESSAGE)
+	panic(INCORRECT_FORMAT_MESSAGE)
 }
 
 func split(text string) []string {
